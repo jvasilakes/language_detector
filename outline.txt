@@ -1,22 +1,22 @@
-1. preprocess_line function, input: text file, output: input minus all special characters (return statement), we read in the file, change it in memory and work with it from memory
-data type: input: text file, output: string
+1. function (preprocess_line), input: string, output: input minus all special characters (return statement), we read in the file, change it in memory and work with it from memory
+data type: input: string, output: string
 
-2.1. function to read in training file (put file into a variable)
+2.1. function (read_file) to read in training file (put file into a variable)
 see 1.
 
-2.2. function that counts all the character trigrams, input: the variable we stored the file in, output: total of character trigrams
+2.2. function (count_trigrams) that counts all the character trigrams, input: the variable we stored the file in, output: total of character trigrams
 date type: input: string, output: dictionary
 
-2.3. function that estimates the probabilities of 2.2, input: the counts of 2.2 (output), output: probabilities of input.
+2.3. function (estimate_probs) that estimates the probabilities of 2.2, input: the counts of 2.2 (output), output: probabilities of input.
 data type: input: dictionary, output: dictionary
 
-2.4. a function that writes the output of 2.3 into a new file
-data type: input: dictionary, output: file
+2.4. a function (write_file) that writes the output of 2.3 into a new file
+data type: input: dictionary, output: success or failure
 
-3. a function to generate random output from the output of 2.3, input: output of 2.3, output: a sample
+3. a function (gen_random_output) to generate random output from the output of 2.3, input: output of 2.3, output: a sample
 data type: input: dictionary, output: string (or list)
 
-4. function that takes as input the test document and the output from 2.3 outputs the perplexity of the test document under the output of 2.3. We’re taking each separate output of 2.3 (English, Spanish and German, so we have to feed the models in separately, we’re only inputting one model at a time.)
+4. function (calc_perplexity) that takes as input the test document and the output from 2.3 outputs the perplexity of the test document under the output of 2.3. We’re taking each separate output of 2.3 (English, Spanish and German, so we have to feed the models in separately, we’re only inputting one model at a time.)
 data type: input: file, dictionary, output: float
 
 perplexity formula: p(wi | wi-1, w1-2)
