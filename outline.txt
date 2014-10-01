@@ -1,18 +1,30 @@
-1. preprocess_line function, input: text string or file, output: input minus all special characters (return statement)
+1. preprocess_line function, input: text file, output: input minus all special characters (return statement), we read in the file, change it in memory and work with it from memory
+data type: input: text file, output: 
 
 2.1. function to read in training file (put file into a variable)
 
-2.2. function that counts all the character trigrams (input is the variable we stored the file in)
+2.2. function that counts all the character trigrams, input: the variable we stored the file in, output: total of character trigrams
 
-2.3. function that estimates the probabilities of 2.2 (input will be the counts of 2.2.)
+2.3. function that estimates the probabilities of 2.2, input: the counts of 2.2 (output), output: probabilities of input.
 
-2.4 a function that writes the output of 2.3 into a new file
+2.4. a function that writes the output of 2.3 into a new file
 
-3. a function to generate random output from the output of 2.3 
+3. a function to generate random output from the output of 2.3, input: output of 2.3, output: a sample
 
-4. function that takes as input the test document and the output from 2.3 outputs the perplexity of the test document under the output of 2.3. We're taking each separate output of 2.3 (English, Spanish and German, so we have to feed the models in separately, we're only inputting one model at a time.)
+4. function that takes as input the test document and the output from 2.3 outputs the perplexity of the test document under the output of 2.3. We’re taking each separate output of 2.3 (English, Spanish and German, so we have to feed the models in separately, we’re only inputting one model at a time.)
 
 
 Hint 1: For 2., we will use MLE as our estimation method.
 
 Hint 2: we need to find out what data type will work best.
+
+
+git add -A
+
+git status
+
+git commit -m “message”
+
+git pull origin master
+
+git push origin master
