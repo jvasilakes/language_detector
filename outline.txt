@@ -8,7 +8,7 @@
 
 2.4 a function that writes the output of 2.3 into a new file
 
-3. function to generate random output from the output of 2.3 
+3. a function to generate random output from the output of 2.3 
 
 4. function that takes as input the test document and the output from 2.3 outputs the perplexity of the test document under the output of 2.3. We're taking each separate output of 2.3 (English, Spanish and German, so we have to feed the models in separately, we're only inputting one model at a time.)
 
