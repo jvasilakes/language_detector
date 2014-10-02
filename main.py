@@ -47,6 +47,7 @@ def build_model(training_data_file):
 
 
 # JAKE
+# Implemented in read_file.py
 def read_file(text_file):
     '''
     # Opens and reads text_file. Returns
@@ -95,6 +96,7 @@ def estimate_probs(trigram_counts_dict):
 
 
 # JAKE
+# Implemented in write_file.py
 def write_file(trigram_probs_dict):
     '''
     # Writes contents of trigram_probs_dict to
