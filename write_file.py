@@ -1,6 +1,6 @@
 #! /usr/bin/python2
 
-# Imports only needed for test function
+# Imports only needed for test function.
 import string
 import math
 import random
@@ -11,18 +11,20 @@ def test(write_func):
     # with random probabilities.
     '''
 
-    # Generate dummy trigram probability model
+    # Generate dummy trigram probability model.
     alphabet = list(string.ascii_lowercase)
 
     random.seed()
 
     test_dict = {}
 
+    # These probabilities will likely not add up to 1.
     for i in xrange(random.randint(100, 300)):
         trigram = ''.join(random.sample(alphabet, 3))
         prob = math.pow(random.random(), random.randint(5, 8))
         test_dict.update({trigram: prob})
 
+    # Test the write_file function with the dummy model.
     write_func(test_dict)
 
     return "Write succeeded."
@@ -31,8 +33,11 @@ def test(write_func):
 # JAKE
 def write_file(trigram_probs_dict):
     '''
-    # Writes contents of trigram_probs_dict to
-    # a new file.
+    # Writes nicely formatted contents
+    # of trigram_probs_dict to a new file,
+    # called trigram_model.txt.
+    # As it stands now, it will overwrite
+    # any existing trigram_model.txt file!
     '''
 
     with open('trigram_model.txt', 'w') as f:

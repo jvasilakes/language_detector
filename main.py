@@ -22,6 +22,8 @@ def main():
 
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
+    return
+
 
 # ------- BUILD MODEL -------------------------------------
 
@@ -29,7 +31,7 @@ def main():
 def build_model(training_data_file):
     '''
     # Builds a trigram probability model for
-    # for training_data_file and return that
+    # for training_data_file and returns that
     # model as a dictionary.
     '''
 
@@ -42,6 +44,8 @@ def build_model(training_data_file):
     trigram_probs = estimate_probs(trigram_counts)
 
     write_file(trigram_probs)
+
+    return trigram_probs
 
 
 # JAKE
