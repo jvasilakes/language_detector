@@ -1,0 +1,7 @@
+#! /bin/bash
+
+echo "Remove all compiled Python files (.pyc extensions)? [y/n]"
+
+read ans
+
+[[ "$ans" = "y" ]] && rm *.pyc || echo "Fine by me."
