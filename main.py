@@ -41,9 +41,7 @@ def build_model(training_data_file):
 
     trigram_probs = estimate_probs(trigram_counts)
 
-    result = write_file(trigram_probs)
-    if not result:
-        print "Error writing to file."
+    write_file(trigram_probs)
 
 
 # JAKE
