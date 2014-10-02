@@ -7,17 +7,10 @@ def read_file(text_file):
     '''
     # Opens and reads text_file. Returns
     # file contents as a string.
-    # If open or read fails, returns None
     '''
 
-    try:
-        f = open(text_file, 'r')
+    with open(text_file, 'r') as f:
         file_string = f.read()
-        f.close()
-
-    except Exception as e:
-        print e
-        return None
 
     return file_string
 
