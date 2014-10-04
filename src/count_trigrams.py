@@ -1,13 +1,19 @@
+# from the __future__ package, import division
+# to allow float division
+
+from __future__ import division
+
 def count_trigrams(processed_string):
 	'''
-	# The function count_trigrams Counts all
+	# The function count_trigrams counts all
 	# character trigrams in processed_string
-	# and creates a dictionary of those trigram counts.
+	# and creates a dictionary of those trigram counts
+	# called trigram_counts_dict.
 	'''
 
 	# This empty dictionary will be filled with
 	# the trigrams in processed_string and their frequencies
-	count = {}
+	trigram_counts_dict = {}
 
 	# i and j are set to the start positions of
 	# the indices within processed_string
@@ -18,28 +24,28 @@ def count_trigrams(processed_string):
 	# this for loop iterates over the characters
 	# in processed_line, pairs them into trigrams
 	# and increments the count of the indices i and j.
-	# If the resulting trigram is a key in count,
+	# If the resulting trigram is a key in trigram_counts_dict,
 	# the value is incremented by 1.
-	# If the trigram is not a key in count,
+	# If the trigram is not a key in trigram_counts_dict,
 	# a key is added with value 1.
 	# Once there are no more trigrams to be iterated over,
-	# count is returned.
+	# trigram_counts_dict is returned.
 	for char in s:
 		if len(s[i:j]) == 3:
 			trigram = s[i:j]
 			i += 1
 			j += 1
-			if trigram in count:
-				count[trigram] += 1
+			if trigram in trigram_counts_dict:
+				trigram_counts_dict[trigram] += 1
 			else:
-				count[trigram] = 1
-	return count
-
+				trigram_counts_dict[trigram] = 1
+	return trigram_counts_dict
 
 #--------------------------------------------------------#
 '''
 # This is a test string
 '''
 
-# s = "this is a string"
-# count_trigrams(s)
+if __name__ == '__main__':
+	s = "this is a string"
+	print count_trigrams(s)
