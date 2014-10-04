@@ -3,6 +3,7 @@
 import numpy
 
 
+# Needed within calc_perplexity
 def count_trigrams(processed_string):
         '''
         # The function count_trigrams counts all
@@ -54,6 +55,10 @@ def calc_perplexity(file_string, trigram_probs_dict):
     test_probs = []
 
     for trigram, count in test_trigrams:
+
+        # Currently not working. If trigram_probs_dict.get returns
+        # zero, our model collapses. See gt_discounter for a work-
+        # in-progress solution.
         test_probs.append(trigram_probs_dict.get(trigram, 0) * count)
 
     numpy.prod(test_probs)
