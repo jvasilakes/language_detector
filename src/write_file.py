@@ -31,19 +31,29 @@ def test(write_func):
 
 
 # JAKE
-def write_file(trigram_probs_dict):
+def write_file(trigram_probs_dict, model_name=None):
     '''
     # Writes nicely formatted contents
-    # of trigram_probs_dict to a new file,
-    # called trigram_model.txt.
-    # As it stands now, it will overwrite
-    # any existing trigram_model.txt file!
+    # of trigram_probs_dict to a file,
+    # called trigram_model.txt. If the file
+    # already exists, each new model is
+    # appended to the end of the file.
     '''
 
-    with open('trigram_model.txt', 'w') as f:
+    if not model_name:
+        model_name = "UNTITLED MODEL"
+    else:
+        model_name = model_name.upper()
+
+    with open('trigram_model.txt', 'a') as f:
+
+        f.write(" **** {0} ****\n\n" .format(model_name))
         f.write("TRIGRAM    PROBABILITY\n\n")
-        for key in trigram_probs_dict.keys():
-            f.write("  {0}  :  {1}\n" .format(key, trigram_probs_dict[key]))
+
+        for key, value in sorted(trigram_probs_dict.items()):
+            f.write("  {0}  :  {1}\n" .format(key, value))
+
+        f.write('\n')
     
     return 
 
