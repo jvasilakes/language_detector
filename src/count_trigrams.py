@@ -1,3 +1,6 @@
+#! /usr/bin/python2
+
+
 def count_trigrams(processed_string):
         '''
         # The function count_trigrams counts all
