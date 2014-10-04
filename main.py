@@ -11,9 +11,9 @@
 
 def main():
 
-    en_model = build_model(training_data_en)
-    es_model = build_model(training_data_es)
-    de_model = build_model(training_data_de)
+    en_model = build_model(training_data_en, model_name='en_model')
+    es_model = build_model(training_data_es, model_name='es_model')
+    de_model = build_model(training_data_de, model_name='de_model')
 
     test_data_str = read_file(test_data_file)
     en_perplexity = calc_perplexity(test_data_str, en_model)
@@ -28,7 +28,7 @@ def main():
 # ------- BUILD MODEL -------------------------------------
 
 
-def build_model(training_data_file):
+def build_model(training_data_file, model_name=None):
     '''
     # Builds a trigram probability model for
     # for training_data_file and returns that
@@ -43,7 +43,7 @@ def build_model(training_data_file):
 
     trigram_probs = estimate_probs(trigram_counts)
 
-    write_file(trigram_probs)
+    write_file(trigram_probs, model_name=model_name)
 
     return trigram_probs
 
@@ -99,7 +99,7 @@ def estimate_probs(trigram_counts_dict):
 
 # JAKE
 # Implemented in write_file.py
-def write_file(trigram_probs_dict):
+def write_file(trigram_probs_dict, model_name=None):
     '''
     # Writes contents of trigram_probs_dict to
     # a new file.
