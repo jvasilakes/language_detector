@@ -64,10 +64,10 @@ def read_file(text_file):
 def preprocess_line(file_string):
     '''
     # Reads in file string returned by read_file()
-    # and removes all characters that are not
-    # whitespace, [a-z][A-Z], comma, or period.
-    # Changes all characters to lowercase and
-    # converts numerals to 0.
+    # and returns a string with all characters removed
+    # that are not whitespace, [a-z][A-Z], comma,
+    # or period. Changes all characters to lowercase
+    # and converts numerals to 0.
     '''
 
     return 0    # temporary
@@ -89,7 +89,7 @@ def count_trigrams(processed_string):
 def estimate_probs(trigram_counts_dict):
     '''
     # Estimates probabilities of trigrams using
-    # trigram_counts_dict and return a new dictionary
+    # trigram_counts_dict and returns a new dictionary
     # with the probabilities.
     '''
 
