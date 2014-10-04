@@ -3,7 +3,7 @@
 from __future__ import division
 
 # Currently does not work, discounted trigrams
-# will sum up to the same number at the undiscounted trigrams.
+# will sum up to the same number as the undiscounted trigrams.
 def gt_discounter(tri_counts):
     '''
     # Good-Turing discounter.
