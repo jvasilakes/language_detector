@@ -1,8 +1,3 @@
-# from the __future__ package, import division
-# to allow float division
-
-from __future__ import division
-
 def count_trigrams(processed_string):
 	'''
 	# The function count_trigrams counts all
