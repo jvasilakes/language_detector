@@ -61,6 +61,7 @@ def read_file(text_file):
 
 
 # JAKE
+# Implemented in preprocess_line.py
 def preprocess_line(file_string):
     '''
     # Reads in file string returned by read_file()

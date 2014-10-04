@@ -20,10 +20,17 @@ def preprocess_line(file_string):
     # converts numerals to 0.
     '''
 
+    # Convert to lowercase.
     processed_string = file_string.lower()
+
+    # Delete any characters that are not a digit,
+    # whitespace, a-z, comma, or period.
     processed_string = re.sub(r'[^\d\sa-z,.]', r'', processed_string)
+
+    # Convert all digits to 0.
     processed_string = re.sub(r'\d', r'0', processed_string)
 
+    # Replace whitespace with underscore
     processed_string = re.sub(r'\s', r'_', processed_string)
 
     return processed_string

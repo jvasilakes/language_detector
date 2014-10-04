@@ -40,16 +40,21 @@ def write_file(trigram_probs_dict, model_name=None):
     # appended to the end of the file.
     '''
 
+    # Default model_name
     if not model_name:
         model_name = "UNTITLED MODEL"
     else:
         model_name = model_name.upper()
 
+    # Open trigram_model.txt (create it if it doesn't exist)
+    # in append mode.
     with open('trigram_model.txt', 'a') as f:
 
+        # Write the model_name and column headers
         f.write(" **** {0} ****\n\n" .format(model_name))
         f.write("TRIGRAM    PROBABILITY\n\n")
 
+        # Write the contents of the trigram model
         for key, value in sorted(trigram_probs_dict.items()):
             f.write("  {0}  :  {1}\n" .format(key, value))
 
