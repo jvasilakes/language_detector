@@ -28,9 +28,9 @@ def count_trigrams(processed_string):
         # a key is added with value 1.
         # Once there are no more trigrams to be iterated over,
         # trigram_counts_dict is returned.
-        for char in s:
-                if len(s[i:j]) == 3:
-                        trigram = s[i:j]
+        for char in processed_string:
+                if len(processed_string[i:j]) == 3:
+                        trigram = processed_string[i:j]
                         i += 1
                         j += 1
                         if trigram in trigram_counts_dict:
