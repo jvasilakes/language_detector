@@ -11,10 +11,12 @@
 
 def main():
 
+    # Train the trigram models
     en_model = build_model(training_data_en, model_name='en_model')
     es_model = build_model(training_data_es, model_name='es_model')
     de_model = build_model(training_data_de, model_name='de_model')
 
+    # Classify the test data file
     test_data_str = read_file(test_data_file)
     en_perplexity = calc_perplexity(test_data_str, en_model)
     es_perplexity = calc_perplexity(test_data_str, es_model)
