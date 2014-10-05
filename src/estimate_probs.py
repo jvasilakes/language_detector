@@ -40,7 +40,7 @@ def estimate_probs(trigram_counts_dict):
     # the next value in the list probs. The index of probs is then
     # incremented by 1 to get to the next value.
     # Once all keys are iterated over, trigram_probs_dict is returned
-        for key in trigram_probs_dict:
+    for key in trigram_probs_dict:
     	trigram_probs_dict[key] = probs[i]
     	i += 1
     return trigram_probs_dict
