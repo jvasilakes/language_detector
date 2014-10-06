@@ -22,9 +22,10 @@ def main():
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
-    en_perplexity = calc_perplexity(test_data_str, en_model)
-    es_perplexity = calc_perplexity(test_data_str, es_model)
-    de_perplexity = calc_perplexity(test_data_str, de_model)
+    test_counts = count_trigrams(test_data_str)
+    en_perplexity = calc_perplexity(test_counts, en_model)
+    es_perplexity = calc_perplexity(test_counts, es_model)
+    de_perplexity = calc_perplexity(test_counts, de_model)
 
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
