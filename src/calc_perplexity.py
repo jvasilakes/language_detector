@@ -56,10 +56,11 @@ def calc_perplexity(file_string, trigram_probs_dict):
 
     for trigram, count in test_trigrams:
 
-        # Currently not working. If trigram_probs_dict.get returns
-        # zero, our model collapses. See gt_discounter for a work-
-        # in-progress solution.
-        test_probs.append(trigram_probs_dict.get(trigram, 0) * count)
+        # If the trigram doesn't appear in our model, just skip it.
+        try:
+            test_probs.append(trigrams_probs_dict[trigram] * count)
+        except KeyError:
+            pass
 
     numpy.prod(test_probs)
         
