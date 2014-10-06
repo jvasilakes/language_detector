@@ -120,10 +120,11 @@ def write_file(trigram_probs_dict, model_name=None):
 
 
 # JAKE
-def calc_perplexity(file_string, trigram_probs_dict):
+def calc_perplexity(test_counts_dict, trigram_probs_dict):
     '''
-    # Calculates perplexity of contents of file_string
-    # according to probabilities in trigram_probs_dict.
+    # Calculates perplexity of test data according to
+    # probabilities in trigram_probs_dict using
+    # trigram counts of test data.
     '''
 
     return 0     # temporary
