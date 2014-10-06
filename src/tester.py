@@ -17,9 +17,9 @@ class Tester(object):
         self.test_file_str = ''
         self.test_pfs = ''
         self.test_counts = {}
-        self.test_perplex = None
+        self.perplexity = None
 
-    def build_model(self, training_data_file):
+    def train(self, training_data_file):
 
         self.train_file_str = read_file(training_data_file)
         self.train_pfs = preprocess_line(self.train_file_str)
@@ -31,7 +31,7 @@ class Tester(object):
         self.test_file_str = read_file(test_data_file)
         self.test_pfs = preprocess_line(self.test_file_str)
         self.test_counts = count_trigrams(self.test_pfs)
-        self.test_perplex = calc_perplexity(self.test_counts, self.train_probs)
+        self.perplexity = calc_perplexity(self.test_counts, self.train_probs)
 
     def attr(self):
 
