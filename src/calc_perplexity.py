@@ -12,17 +12,14 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
 
     test_probs = []
 
-    for trigram, count in test_counts_dict:
+    for trigram, count in test_counts_dict.items():
 
         # If the trigram doesn't appear in our model, just skip it.
         try:
-            test_probs.append(trigrams_probs_dict[trigram] * count)
+            test_probs.append(test_counts_dict[trigram] * count)
         except KeyError:
             pass
 
-    numpy.prod(test_probs)
-        
+    perplexity = numpy.power(numpy.prod(test_probs), len(test_counts_dict))
 
-    return 0
-    # return perplexity
-
+    return perplexity
