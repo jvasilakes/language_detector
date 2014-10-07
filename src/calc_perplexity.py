@@ -29,23 +29,3 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
     perplexity = numpy.power(2, -norm)
 
     return perplexity
-
-
-def calc_perplexity_simp():
-    '''
-    # Calculates perplexity of contents of file_string
-    # according to probabilities in trigram_probs_dict.
-    '''
-
-    prob = 0.1
-    probs = []
-
-    for i in range(10):
-
-        probs.append(prob)
-
-    product = numpy.prod(probs)
-
-    perplexity = numpy.power(product, -(1/len(probs)))
-
-    print perplexity

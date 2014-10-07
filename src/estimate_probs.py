@@ -5,6 +5,7 @@
 
 from __future__ import division
 
+
 def estimate_probs(trigram_counts_dict):
     '''
     # Estimates probabilities of trigrams using

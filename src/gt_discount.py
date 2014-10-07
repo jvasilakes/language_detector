@@ -4,7 +4,7 @@ from __future__ import division
 
 # Currently does not work, discounted trigrams
 # will sum up to the same number as the undiscounted trigrams.
-def gt_discounter(tri_counts):
+def gt_discount(tri_counts):
     '''
     # Good-Turing discounter.
     # Calculates Good-Turing probability of
@@ -12,7 +12,7 @@ def gt_discounter(tri_counts):
     # all counts in tri_counts accordingly.
     '''
 
-    new_counts = [n for n in tri_counts]
+    new_counts = tri_counts.copy()
 
     # Calculate the probability for trigrams with zero count.
     N_1 = len([i for i in new_counts.itervalues() if i == 1])
@@ -31,7 +31,7 @@ def gt_discounter(tri_counts):
                 num2 = len([n for n in tri_counts.itervalues() if n == i+1])
                 denom = len([n for n in tri_counts.itervalues() if n == i])
 
-                print "{0}{1}" .format(num1, num2)
+                print "{0}*{1}" .format(num1, num2)
                 print "------      =  {0}" .format((num1 * num2) / denom)
                 print " {0}  " .format(denom)
 

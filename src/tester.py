@@ -1,6 +1,7 @@
 from read_file import read_file
 from preprocess_line import preprocess_line
 from count_trigrams import count_trigrams
+from gt_discount import gt_discount
 from estimate_probs import estimate_probs
 from calc_perplexity import calc_perplexity
 
@@ -12,6 +13,8 @@ class Tester(object):
         self.train_file_str = ''
         self.train_pfs = ''
         self.train_counts = {}
+        self.train_discounts = {}
+        self.prob_zero_count = None
         self.train_probs = {}
 
         self.test_file_str = ''
@@ -24,6 +27,11 @@ class Tester(object):
         self.train_file_str = read_file(training_data_file)
         self.train_pfs = preprocess_line(self.train_file_str)
         self.train_counts = count_trigrams(self.train_pfs)
+
+        ans = raw_input("Smooth the counts? [y/n]")
+        if ans.lower() == 'y':
+            self.prob_zero_counts, self.train_discounts = gt_discount(self.train_counts)
+
         self.train_probs = estimate_probs(self.train_counts)
 
     def test(self, test_data_file):
@@ -43,4 +51,4 @@ class Tester(object):
         print "self.train_counts"
         print "self.test_counts"
         print "self.train_probs"
-        print "self.test_perplex"
+        print "self.perplexity"
