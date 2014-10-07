@@ -14,7 +14,7 @@ class Tester(object):
         self.train_pfs = ''
         self.train_counts = {}
         self.train_discounts = {}
-        self.prob_zero_count = None
+        self.prob_zero_counts = None
         self.train_probs = {}
 
         self.test_file_str = ''
@@ -40,7 +40,9 @@ class Tester(object):
         self.test_file_str = read_file(test_data_file)
         self.test_pfs = preprocess_line(self.test_file_str)
         self.test_counts = count_trigrams(self.test_pfs)
-        self.perplexity = calc_perplexity(self.test_counts, self.train_probs)
+        self.perplexity = calc_perplexity(self.test_counts,
+                                          self.train_probs,
+                                          self.prob_zero_counts)
 
     def attr(self):
 
