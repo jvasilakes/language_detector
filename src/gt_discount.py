@@ -17,7 +17,7 @@ def gt_discount(tri_counts):
     # Calculate the probability for trigrams with zero count.
     N_1 = len([i for i in new_counts.itervalues() if i == 1])
     N = sum(new_counts.values())
-    Pgt_0 = (N_1 / N)
+    zero_count_probs = (N_1 / N)
 
     # Calculate updated counts and update values.
     for key, value in tri_counts.iteritems():
@@ -37,4 +37,4 @@ def gt_discount(tri_counts):
             # Update value with the new count
             new_counts[key] = (num1 * num2) / denom
 
-    return Pgt_0, new_counts
+    return zero_count_probs, new_counts
