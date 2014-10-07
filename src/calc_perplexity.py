@@ -6,7 +6,7 @@ import numpy
 
 
 # JAKE
-def calc_perplexity(test_counts_dict, trigram_probs_dict):
+def calc_perplexity(test_counts_dict, trigram_probs_dict, default_prob):
     '''
     # Calculates perplexity of contents of file_string
     # according to probabilities in trigram_probs_dict.
@@ -17,9 +17,8 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
     for trigram, count in test_counts_dict.items():
 
         # If the trigram doesn't appear in our model, just skip it.
-        default = min(trigram_probs_dict.values())
         for n in range(count):
-            logprob = numpy.log10(trigram_probs_dict.get(trigram, default))
+            logprob = numpy.log10(trigram_probs_dict.get(trigram, default_prob))
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
