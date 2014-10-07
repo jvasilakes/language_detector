@@ -22,9 +22,10 @@ def main():
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
-    en_perplexity = calc_perplexity(test_data_str, en_model)
-    es_perplexity = calc_perplexity(test_data_str, es_model)
-    de_perplexity = calc_perplexity(test_data_str, de_model)
+    test_counts = count_trigrams(test_data_str)
+    en_perplexity = calc_perplexity(test_counts, en_model)
+    es_perplexity = calc_perplexity(test_counts, es_model)
+    de_perplexity = calc_perplexity(test_counts, de_model)
 
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
@@ -119,10 +120,11 @@ def write_file(trigram_probs_dict, model_name=None):
 
 
 # JAKE
-def calc_perplexity(file_string, trigram_probs_dict):
+def calc_perplexity(test_counts_dict, trigram_probs_dict):
     '''
-    # Calculates perplexity of contents of file_string
-    # according to probabilities in trigram_probs_dict.
+    # Calculates perplexity of test data according to
+    # probabilities in trigram_probs_dict using
+    # trigram counts of test data.
     '''
 
     return 0     # temporary
