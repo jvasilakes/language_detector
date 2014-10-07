@@ -9,7 +9,7 @@ import collections
 def gen_random_output(trigram_probs_dict):
 	od = collections.OrderedDict()
 	od.update(trigram_probs_dict)
-	random_string = np.random.choice(od.keys(), 50, od.values())
+	random_string = np.random.choice(o.dkeys(), size=50, p=od.values())
 	random_string = ''.join(random_string)
 	return random_string
 
