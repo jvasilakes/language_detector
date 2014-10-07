@@ -20,24 +20,21 @@ def gt_discount(tri_counts):
     Pgt_0 = (N_1 / N)
 
     # Calculate updated counts and update values.
-    for i in range(1, max(new_counts.values()) + 1):
+    for key, value in tri_counts.iteritems():
+        num1 = value + 1
 
-        for key, value in new_counts.items():
-            if value == i:
+        if not num1 in tri_counts.values():
+            pass
 
-                # Compute both numerators and denominator
-                # for the discounted counts equation.
-                num1 = i + 1
-                num2 = len([n for n in tri_counts.itervalues() if n == i+1])
-                denom = len([n for n in tri_counts.itervalues() if n == i])
+        else:
+            num2 = 0
+            while not num2:
+                num2 = len([n for n in tri_counts.itervalues() if n == num1])
+                num1 += 1
 
-                print "{0}*{1}" .format(num1, num2)
-                print "------      =  {0}" .format((num1 * num2) / denom)
-                print " {0}  " .format(denom)
+            denom = len([n for n in tri_counts.itervalues() if n == value])
 
-                
-
-                # Update value with the new count
-                new_counts[key] = (num1 * num2) / denom
+            # Update value with the new count
+            new_counts[key] = (num1 * num2) / denom
 
     return Pgt_0, new_counts

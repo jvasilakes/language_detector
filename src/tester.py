@@ -32,7 +32,8 @@ class Tester(object):
         if ans.lower() == 'y':
             self.prob_zero_counts, self.train_discounts = gt_discount(self.train_counts)
 
-        self.train_probs = estimate_probs(self.train_counts)
+        #self.train_probs = estimate_probs(self.train_counts)
+        self.train_probs = estimate_probs(self.train_discounts)
 
     def test(self, test_data_file):
 

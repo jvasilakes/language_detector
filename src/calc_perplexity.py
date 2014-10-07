@@ -19,8 +19,8 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
         # If the trigram doesn't appear in our model, just skip it.
         default = min(trigram_probs_dict.values())
         for n in range(count):
-            test_probs.append(numpy.log10(trigram_probs_dict.get(trigram,
-                                                                 default)))
+            logprob = numpy.log10(trigram_probs_dict.get(trigram, default))
+            test_probs.append(logprob)
 
     logprob = sum(test_probs)
 
