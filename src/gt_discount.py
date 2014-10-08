@@ -26,10 +26,10 @@ def gt_discount_temp(tri_counts):
             pass
 
         else:
-            num2 = 0
-            while not num2:
-                num2 = len([n for n in tri_counts.itervalues() if n == num1])
-                num1 += 1
+            #num2 = 0
+            #while not num2:
+            num2 = len([n for n in tri_counts.itervalues() if n == num1])
+                #num1 += 1
 
             denom = len([n for n in tri_counts.itervalues() if n == value])
 
@@ -62,15 +62,19 @@ def gt_discount(tri_counts):
             pass
 
         else:
-            num2 = 0
-            while not num2:
-                num2 = len([n for n in tri_counts.itervalues() if n == num1])
-                num1 += 1
+            # Don't need this while test because num1 presence in tri_counts
+            # is tested for above.
+            #num2 = 0
+            #while not num2:
+            num2 = len([n for n in tri_counts.itervalues() if n == num1])
+                #num1 += 1
 
             denom = len([n for n in tri_counts.itervalues() if n == value])
 
             # Update value with the new count
             tri_counts[key] = (num1 * num2) / denom
+            if tri_counts[key] == 0:
+                print "Value is zero."
 
     # Cast tri_counts as a defaultdict with zero_count_probs as the default.
     ## Default values used in calc_perplexity.

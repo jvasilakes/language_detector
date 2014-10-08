@@ -31,6 +31,7 @@ def main():
     es_model = build_model(training_data_es, model_name='es_model')
     print "Building German model."
     de_model = build_model(training_data_de, model_name='de_model')
+    print "Models written to file 'trigram_model.txt'."
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
@@ -48,15 +49,16 @@ def main():
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
     if result == en_perplexity:
-        return "ENGLISH"
+        lang = "ENGLISH"
     elif result == es_perplexity:
-        return "SPANISH"
+        lang = "SPANISH"
     else:
-        return "GERMAN"
+        lang = "GERMAN"
+
+    print "Test document language: {0}" .format(lang)
 
 
 # ------- BUILD MODEL -------------------------------------
-
 
 def build_model(training_data_file, model_name=None):
     '''
@@ -180,26 +182,29 @@ def gt_discount(tri_counts):
     '''
 
     # Calculate the probability for trigrams with zero count.
+    # Equation: P_gt_0 = N_1 / N_total
     N_1 = len([i for i in tri_counts.itervalues() if i == 1])
-    N = sum(tri_counts.values())
+    N = sum(tri_counts.itervalues())
     zero_count_probs = (N_1 / N)
 
     # Calculate updated counts and update values.
+    # Equation: discount_c = (c+1) * (N_c+1 / N_c) 
     for key, value in tri_counts.iteritems():
-        num1 = value + 1
 
-        if num1 not in tri_counts.values():
+        # Calculate first numerator (c+1)
+        num1 = value + 1
+        if num1 not in tri_counts.itervalues():
             pass
 
         else:
-            num2 = 0
-            while not num2:
-                num2 = len([n for n in tri_counts.itervalues() if n == num1])
-                num1 += 1
+            # Calculate second numerator (N_c+1)
+            num2 = len([n for n in tri_counts.itervalues() if n == num1])
 
+            # Calculate denominator (N_c)
             denom = len([n for n in tri_counts.itervalues() if n == value])
 
-            # Update value with the new count
+            # Calculate the new count and
+            # update the count dict with the new count
             tri_counts[key] = (num1 * num2) / denom
 
     # Cast tri_counts as a defaultdict with zero_count_probs as the default.
@@ -293,7 +298,6 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
-    print "LOGPROB: {0}" .format(logprob)
 
     norm = logprob / len(test_probs)
 
@@ -317,4 +321,4 @@ def gen_random_output(trigram_probs_dict):
 
 
 if __name__ == '__main__':
-    print main()
+    main()
