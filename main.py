@@ -11,26 +11,47 @@
 '''
 
 from __future__ import division
+
+import re
 import numpy
+import collections
 
 
 def main():
 
+    training_data_en = 'training.en'
+    training_data_es = 'training.es'
+    training_data_de = 'training.de'
+    test_data_file = 'test_file.txt'
+
     # Train the trigram models
+    print "Building English model."
     en_model = build_model(training_data_en, model_name='en_model')
+    print "Building Spanish model."
     es_model = build_model(training_data_es, model_name='es_model')
+    print "Building German model."
     de_model = build_model(training_data_de, model_name='de_model')
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
     test_counts = count_trigrams(test_data_str)
+
+    print "Testing models."
     en_perplexity = calc_perplexity(test_counts, en_model)
+    print "English model perplexity is {0}" .format(en_perplexity)
     es_perplexity = calc_perplexity(test_counts, es_model)
+    print "Spanish model perplexity is {0}" .format(es_perplexity)
     de_perplexity = calc_perplexity(test_counts, de_model)
+    print "German model perplexity is {0}" .format(de_perplexity)
 
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
-    return
+    if result == en_perplexity:
+        return "ENGLISH"
+    elif result == es_perplexity:
+        return "SPANISH"
+    else:
+        return "GERMAN"
 
 
 # ------- BUILD MODEL -------------------------------------
@@ -43,23 +64,25 @@ def build_model(training_data_file, model_name=None):
     # model as a dictionary.
     '''
 
+    # Read in the file.
     data_file_str = read_file(training_data_file)
 
+    # Remove unwanted characters.
     processed_data_str = preprocess_line(data_file_str)
-    
+
+    # Count trigrams.
     trigram_counts = count_trigrams(processed_data_str)
 
     # Discount using Good-Turing discounting.
-    ## Discount applied by changing trigram_counts
-    ## in-place.
-    zero_count_prob = gt_discount(trigram_counts)
+    tri_discounts = gt_discount(trigram_counts)
 
-    trigram_probs = estimate_probs(trigram_counts)
+    # Trigram_probs is a defaultdict with trigrams as keys
+    # and their probabilities as values.
+    trigram_probs = estimate_probs(tri_discounts)
 
+    # Write the model to a file.
     write_file(trigram_probs, model_name=model_name)
 
-    # trigram_probs is a dict with trigrams as keys
-    ## and their probabilities as values.
     return trigram_probs
 
 
@@ -93,7 +116,7 @@ def preprocess_line(file_string):
     processed_string = file_string.lower()
 
     # Delete any characters that are not a digit,
-    ## whitespace, a-z, comma, or period.
+    # whitespace, a-z, comma, or period.
     processed_string = re.sub(r'[^\d\sa-z,.]', r'', processed_string)
 
     # Convert all digits to 0.
@@ -145,6 +168,46 @@ def count_trigrams(processed_string):
     return trigram_counts_dict
 
 
+def gt_discount(tri_counts):
+    '''
+    # Good-Turing discounter.
+    # Calculates Good-Turing probability of
+    # zero-count trigrams, and disocunts
+    # all counts in tri_counts accordingly.
+    # Recasts tri_counts as a defaultdict with
+    # zero_count_probs as the default value.
+    '''
+
+    # Calculate the probability for trigrams with zero count.
+    N_1 = len([i for i in tri_counts.itervalues() if i == 1])
+    N = sum(tri_counts.values())
+    zero_count_probs = (N_1 / N)
+
+    # Calculate updated counts and update values.
+    for key, value in tri_counts.iteritems():
+        num1 = value + 1
+
+        if num1 not in tri_counts.values():
+            pass
+
+        else:
+            num2 = 0
+            while not num2:
+                num2 = len([n for n in tri_counts.itervalues() if n == num1])
+                num1 += 1
+
+            denom = len([n for n in tri_counts.itervalues() if n == value])
+
+            # Update value with the new count
+            tri_counts[key] = (num1 * num2) / denom
+
+    # Cast tri_counts as a defaultdict with zero_count_probs as the default.
+    # Default values used in calc_perplexity.
+    new_counts = collections.defaultdict(lambda: zero_count_probs, tri_counts)
+
+    return new_counts
+
+
 # ROMI
 def estimate_probs(trigram_counts_dict):
     '''
@@ -152,22 +215,22 @@ def estimate_probs(trigram_counts_dict):
     # trigram_counts_dict and returns a new dictionary
     # with the probabilities.
     '''
-    
+
     # variable that creates a new dictionary called
     # trigram_probs_dict which is a copy of trigram_counts_dict.
     trigram_probs_dict = trigram_counts_dict.copy()
-    
+
     # sets the variable sum_counts to the sum
     # of all the values in trigram_couns_dict
     sum_counts = sum(trigram_counts_dict.values())
-    
+
     # a for loop that iterates over all the keys in trigram_probs_dict
     # and sets the value of that key (which is currently the count)
     # to be the probability of that key by dividing the value by the sum
     # of all values (MLE). Once all keys are iterated over,
     # trigram_probs_dict is returned
     for key, value in trigram_probs_dict.items():
-    	trigram_probs_dict[key] = value / sum_counts
+        trigram_probs_dict[key] = value / sum_counts
 
     return trigram_probs_dict
 
@@ -190,7 +253,7 @@ def write_file(trigram_probs_dict, model_name=None):
         model_name = model_name.upper()
 
     # Open trigram_model.txt (create it if it doesn't exist)
-    ## in append mode.
+    # in append mode.
     with open('trigram_model.txt', 'a') as f:
 
         # Write the model_name and column headers
@@ -202,14 +265,14 @@ def write_file(trigram_probs_dict, model_name=None):
             f.write("  {0}  :  {1}\n" .format(key, value))
 
         f.write('\n')
-    
-    return 
+
+    return
 
 # -----------------------------------------------------
 
 
 # JAKE
-def calc_perplexity(test_counts_dict, trigram_probs_dict, default_prob):
+def calc_perplexity(test_counts_dict, trigram_probs_dict):
     '''
     # Calculates perplexity of contents of file_string
     # according to probabilities in trigram_probs_dict.
@@ -221,7 +284,11 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict, default_prob):
 
         # If the trigram doesn't appear in our model, just skip it.
         for n in range(count):
-            logprob = numpy.log10(trigram_probs_dict.get(trigram, default_prob))
+
+            # Since trigram_probs_dict is a defaultdict as created
+            # in gt_discount, it will return the zero count probability
+            # if trigram not in trigram_probs_dict.
+            logprob = numpy.log10(trigram_probs_dict[trigram])
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
@@ -245,3 +312,7 @@ def gen_random_output(trigram_probs_dict):
     random_string = numpy.random.choice(od.keys(), size=50, p=od.values())
     random_string = ''.join(random_string)
     return random_string
+
+
+if __name__ == '__main__':
+    print main()
