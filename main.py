@@ -34,7 +34,8 @@ def main():
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
-    test_counts = count_trigrams(test_data_str)
+    test_processed = preprocess_line(test_data_str)
+    test_counts = count_trigrams(test_processed)
 
     print "Testing models."
     en_perplexity = calc_perplexity(test_counts, en_model)
@@ -292,6 +293,7 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
+    print "LOGPROB: {0}" .format(logprob)
 
     norm = logprob / len(test_probs)
 

@@ -1,6 +1,7 @@
 #! /usr/bin/python
 
 from __future__ import division
+import collections
 
 # Currently does not work, discounted trigrams
 # will sum up to the same number as the undiscounted trigrams.
@@ -73,6 +74,6 @@ def gt_discount(tri_counts):
 
     # Cast tri_counts as a defaultdict with zero_count_probs as the default.
     ## Default values used in calc_perplexity.
-    new_counts = defaultdict(lambda: zero_count_probs, tri_counts) 
+    new_counts = collections.defaultdict(lambda: zero_count_probs, tri_counts) 
 
     return new_counts
