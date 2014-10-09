@@ -8,7 +8,7 @@ from __future__ import division
 
 def estimate_probs(trigram_counts_dict):
     '''
-    # Estimates probabilities of trigrams using
+    # Estimates probabilities (MLE) of trigrams using
     # trigram_counts_dict and returns a new dictionary
     # with the probabilities.
     '''
@@ -21,13 +21,17 @@ def estimate_probs(trigram_counts_dict):
     # of all the values in trigram_couns_dict
     sum_counts = sum(trigram_counts_dict.values())
     
-    # a for loop that iterates over all the keys in trigram_probs_dict
-    # and sets the value of that key (which is currently the count)
-    # to be the probability of that key by dividing the value by the sum
-    # of all values (MLE). Once all keys are iterated over,
-    # trigram_probs_dict is returned
+    # a for loop that iterates over all the keys in trigram_probs_dict.
+    # within this for loop, we iterate over all keys again with k
+    # and if that key 'k' starts with the same two characters as key
+    # the value of that key is stored. sum(bigrams) is te sum of all these values.
+    # It's the frequency of bigram key[:2], i.e., the first two characters of key.
+    # The probability is then computed by dividing the value of key by the frequency
+    # of the first two characters of key.
+    # Once all keys are iterated over, trigram_probs_dict is returned
     for key, value in trigram_probs_dict.items():
-    	trigram_probs_dict[key] = value / sum_counts
+    	bigrams = [trigram_probs_dict[k] for k in trigram_probs_dict.keys() if k.startswith(key[:2])]
+    	trigram_probs_dict[key] = value / sum(bigrams)
     return trigram_probs_dict
     
 #--------------------------------------------------------#
