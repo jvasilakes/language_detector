@@ -226,17 +226,14 @@ def estimate_probs(trigram_counts_dict):
     # trigram_probs_dict which is a copy of trigram_counts_dict.
     trigram_probs_dict = trigram_counts_dict.copy()
 
-    # sets the variable sum_counts to the sum
-    # of all the values in trigram_couns_dict
-    sum_counts = sum(trigram_counts_dict.values())
-
     # a for loop that iterates over all the keys in trigram_probs_dict
     # and sets the value of that key (which is currently the count)
     # to be the probability of that key by dividing the value by the sum
     # of all values (MLE). Once all keys are iterated over,
     # trigram_probs_dict is returned
-    for key, value in trigram_probs_dict.items():
-        trigram_probs_dict[key] = value / sum_counts
+    for key, value in trigram_counts_dict.items():
+    	bigrams = [trigram_counts_dict[k] for k in trigram_counts_dict.keys() if k.startswith(key[:2])]
+    	trigram_probs_dict[key] = value / sum(bigrams)
 
     return trigram_probs_dict
 
@@ -294,7 +291,7 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
             # Since trigram_probs_dict is a defaultdict as created
             # in gt_discount, it will return the zero count probability
             # if trigram not in trigram_probs_dict.
-            logprob = numpy.log10(trigram_probs_dict[trigram])
+            logprob = numpy.log2(trigram_probs_dict[trigram])
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
