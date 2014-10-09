@@ -17,14 +17,14 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
     for trigram, count in test_counts_dict.items():
 
         for n in range(count):
-            logprob = numpy.log10(trigram_probs_dict[trigram])
+            logprob = numpy.log2(trigram_probs_dict[trigram])
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
     print "LOGPROB: {0}" .format(logprob)
 
-    norm = logprob / len(test_probs)
+    entropy = logprob / len(test_probs)
 
-    perplexity = numpy.power(2, -norm)
+    perplexity = numpy.power(2, -entropy)
 
     return perplexity
