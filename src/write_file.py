@@ -4,6 +4,9 @@
 import string
 import math
 import random
+import os
+import errno
+
 
 def test(write_func):
     '''
@@ -59,9 +62,9 @@ def write_file(trigram_probs_dict, model_name=None):
             f.write("  {0}  :  {1}\n" .format(key, value))
 
         f.write('\n')
-    
-    return 
+
+    return
 
 
 if __name__ == '__main__':
-    print test(write_file)
+    print test(save_model)
