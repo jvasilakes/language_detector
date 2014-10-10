@@ -29,8 +29,8 @@ def estimate_probs(trigram_counts_dict):
     # The probability is then computed by dividing the value of key by the frequency
     # of the first two characters of key.
     # Once all keys are iterated over, trigram_probs_dict is returned
-    for key, value in trigram_probs_dict.items():
-    	bigrams = [trigram_probs_dict[k] for k in trigram_probs_dict.keys() if k.startswith(key[:2])]
+    for key, value in trigram_counts_dict.items():
+    	bigrams = [trigram_counts_dict[k] for k in trigram_counts_dict.keys() if k.startswith(key[:2])]
     	trigram_probs_dict[key] = value / sum(bigrams)
     return trigram_probs_dict
     
