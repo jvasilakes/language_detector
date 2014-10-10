@@ -3,7 +3,6 @@
 import numpy as np
 import collections
 
-
 def gen_random_output(ngram_probs_dict, n=300):
         '''
         # Generate n characters of output randomly selected
@@ -11,10 +10,16 @@ def gen_random_output(ngram_probs_dict, n=300):
         # OrderedDict is used to ensure that each key is 
         # paired with its associated value.
         '''
-        od = collections.OrderedDict(ngram_probs_dict)
-        size = n/len(od.keys()[0])
-        random_string = np.random.choice(od.keys(), size=size, p=od.values())
-        random_string = ''.join(random_string)
+        random_string = numpy.random.choice(ngram_probs_dict())
+        
+        for i in range(n):
+        	od = collections.OrderedDict()
+        	for key, value in ngram_probs_dict:
+        		if key.startswith(random_string[-2:]):
+        			od.update({key, value})
+        	next = np.random.choice(od.keys(), p=od.values())
+        	random_string += next[-1]
+        
         return random_string
 
 
