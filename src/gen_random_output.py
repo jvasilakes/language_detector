@@ -4,9 +4,14 @@ import numpy as np
 import collections
 
 
-def gen_random_output(trigram_probs_dict):
-        od = collections.OrderedDict()
-        od.update(trigram_probs_dict)
+def gen_random_output(ngram_probs_dict, n=300):
+        '''
+        # Generate n characters of output randomly selected
+        # from the keys of ngram_probs_dict. 
+        # OrderedDict is used to ensure that each key is 
+        # paired with its associated value.
+        '''
+        od = collections.OrderedDict(ngram_probs_dict)
         random_string = np.random.choice(od.keys(), size=50, p=od.values())
         random_string = ''.join(random_string)
         return random_string
