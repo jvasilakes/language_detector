@@ -12,7 +12,8 @@ def gen_random_output(ngram_probs_dict, n=300):
         # paired with its associated value.
         '''
         od = collections.OrderedDict(ngram_probs_dict)
-        random_string = np.random.choice(od.keys(), size=50, p=od.values())
+        size = n/len(od.keys()[0])
+        random_string = np.random.choice(od.keys(), size=size, p=od.values())
         random_string = ''.join(random_string)
         return random_string
 
