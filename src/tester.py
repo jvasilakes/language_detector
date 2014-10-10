@@ -32,9 +32,10 @@ class Tester(object):
         ans = raw_input("Smooth the counts? [y/n]")
         if ans.lower() == 'y':
             self.train_discounts = gt_discount(self.train_counts)
+            self.train_probs = estimate_probs(self.train_discounts)
+        else:
+            self.train_probs = estimate_probs(self.train_counts)
 
-        #self.train_probs = estimate_probs(self.train_counts)
-        self.train_probs = estimate_probs(self.train_discounts)
         write_file(self.train_probs)
 
     def test(self, test_data_file):
@@ -48,10 +49,11 @@ class Tester(object):
 
         print "CLASS ATTRIBUTES\n"
         print "self.train_file_str"
-        print "self.test_file_str"
         print "self.train_pfs"
-        print "self.test_pfs"
         print "self.train_counts"
-        print "self.test_counts"
         print "self.train_probs"
+        print "self.prob_zero_counts"
+        print "self.test_file_str"
+        print "self.test_pfs"
+        print "self.test_counts"
         print "self.perplexity"
