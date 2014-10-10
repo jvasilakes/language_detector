@@ -4,7 +4,7 @@
 # ****************** LANGUAGE DETECTOR ******************
 #
 # Using a set of training data in a variety of languages,
-# determines the language of a test documents using trigram
+# determines the language of a test documents using ngram
 # character counts.
 #
 # *******************************************************
@@ -18,31 +18,39 @@ import numpy
 import collections
 
 
+# Set number of grams here.
+NGRAMS = 3
+
+
 def main():
+
+    if NGRAMS <= 1:
+        print "Sorry, NGRAMS must be >= 2."
+        return
 
     # If we've already built some models before,
     # rename the file to keep them separate.
-    if os.path.isfile('trigram_model.txt'):
-        os.rename('trigram_model.txt', 'trigram_model.old')
+    if os.path.isfile(str(NGRAMS) + 'gram_model.txt'):
+        os.rename(str(NGRAMS) + 'gram_model.txt', str(NGRAMS) + 'gram_model.old')
 
     training_data_en = 'training.en'
     training_data_es = 'training.es'
     training_data_de = 'training.de'
     test_data_file = 'test_file.txt'
 
-    # Train the trigram models
+    # Train the ngram models
     print "Building English model."
     en_model = build_model(training_data_en, model_name='en_model')
     print "Building Spanish model."
     es_model = build_model(training_data_es, model_name='es_model')
     print "Building German model."
     de_model = build_model(training_data_de, model_name='de_model')
-    print "Models written to file 'trigram_model.txt'."
+    print "Models written to file '"+str(NGRAMS)+"'gram_model.txt'."
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
     test_processed = preprocess_line(test_data_str)
-    test_counts = count_trigrams(test_processed)
+    test_counts = count_ngrams(NGRAMS, test_processed)
 
     print "Testing models."
     en_perplexity = calc_perplexity(test_counts, en_model)
@@ -68,7 +76,7 @@ def main():
 
 def build_model(training_data_file, model_name=None):
     '''
-    # Builds a trigram probability model for
+    # Builds a ngram probability model for
     # for training_data_file and returns that
     # model as a dictionary.
     '''
@@ -79,20 +87,20 @@ def build_model(training_data_file, model_name=None):
     # Remove unwanted characters.
     processed_data_str = preprocess_line(data_file_str)
 
-    # Count trigrams.
-    trigram_counts = count_trigrams(processed_data_str)
+    # Count ngrams.
+    ngram_counts = count_ngrams(NGRAMS, processed_data_str)
 
     # Discount using Good-Turing discounting.
-    tri_discounts = gt_discount(trigram_counts)
+    n_discounts = gt_discount(ngram_counts)
 
-    # Trigram_probs is a defaultdict with trigrams as keys
+    # Trigram_probs is a defaultdict with ngrams as keys
     # and their probabilities as values.
-    trigram_probs = estimate_probs(tri_discounts)
+    ngram_probs = estimate_probs(n_discounts)
 
     # Write the model to a file.
-    write_file(trigram_probs, model_name=model_name)
+    write_file(ngram_probs, model_name=model_name)
 
-    return trigram_probs
+    return ngram_probs
 
 
 # JAKE
@@ -138,119 +146,119 @@ def preprocess_line(file_string):
 
 
 # ROMI
-def count_trigrams(processed_string):
+def count_ngrams(n, processed_string):
     '''
-    # Counts all character trigrams in processed_string
-    # and creates a dictionary of those trigram counts
-    # called trigram_counts_dict.
+    # Counts all character ngrams in processed_string
+    # and creates a dictionary of those ngram counts
+    # called ngram_counts_dict.
     '''
 
     # This empty dictionary will be filled with
-    # the trigrams in processed_string and their frequencies
-    trigram_counts_dict = {}
+    # the ngrams in processed_string and their frequencies
+    ngram_counts_dict = {}
 
     # i and j are set to the start positions of
     # the indices within processed_string
     # (print s[0:3] prints the first three characters of s)
     i = 0
-    j = 3
+    j = n
 
     # This for loop iterates over the characters
-    # in processed_line, pairs them into trigrams
+    # in processed_line, pairs them into ngrams
     # and increments the count of the indices i and j.
-    # If the resulting trigram is a key in trigram_counts_dict,
+    # If the resulting ngram is a key in ngram_counts_dict,
     # the value is incremented by 1.
-    # If the trigram is not a key in trigram_counts_dict,
+    # If the ngram is not a key in ngram_counts_dict,
     # a key is added with value 1.
-    # Once there are no more trigrams to be iterated over,
-    # trigram_counts_dict is returned.
+    # Once there are no more ngrams to be iterated over,
+    # ngram_counts_dict is returned.
     for char in processed_string:
-        if len(processed_string[i:j]) == 3:
-            trigram = processed_string[i:j]
+        if len(processed_string[i:j]) == n:
+            ngram = processed_string[i:j]
             i += 1
             j += 1
-            if trigram in trigram_counts_dict:
-                trigram_counts_dict[trigram] += 1
+            if ngram in ngram_counts_dict:
+                ngram_counts_dict[ngram] += 1
             else:
-                trigram_counts_dict[trigram] = 1
+                ngram_counts_dict[ngram] = 1
 
-    return trigram_counts_dict
+    return ngram_counts_dict
 
 
-def gt_discount(tri_counts):
+def gt_discount(n_counts):
     '''
     # Good-Turing discounter.
     # Calculates Good-Turing probability of
-    # zero-count trigrams, and disocunts
-    # all counts in tri_counts accordingly.
-    # Recasts tri_counts as a defaultdict with
+    # zero-count ngrams, and disocunts
+    # all counts in n_counts accordingly.
+    # Recasts n_counts as a defaultdict with
     # zero_count_probs as the default value.
     '''
 
-    # Calculate the probability for trigrams with zero count.
+    # Calculate the probability for ngrams with zero count.
     # Equation: P_gt_0 = N_1 / N_total
-    N_1 = len([i for i in tri_counts.itervalues() if i == 1])
-    N = sum(tri_counts.itervalues())
+    N_1 = len([i for i in n_counts.itervalues() if i == 1])
+    N = sum(n_counts.itervalues())
     zero_count_probs = (N_1 / N)
 
     # Calculate updated counts and update values.
     # Equation: discount_c = (c+1) * (N_c+1 / N_c)
-    for key, value in tri_counts.iteritems():
+    for key, value in n_counts.iteritems():
 
         # Calculate first numerator (c+1)
         num1 = value + 1
-        if num1 not in tri_counts.itervalues():
+        if num1 not in n_counts.itervalues():
             pass
 
         else:
             # Calculate second numerator (N_c+1)
-            num2 = len([n for n in tri_counts.itervalues() if n == num1])
+            num2 = len([n for n in n_counts.itervalues() if n == num1])
 
             # Calculate denominator (N_c)
-            denom = len([n for n in tri_counts.itervalues() if n == value])
+            denom = len([n for n in n_counts.itervalues() if n == value])
 
             # Calculate the new count and
             # update the count dict with the new count
-            tri_counts[key] = (num1 * num2) / denom
+            n_counts[key] = (num1 * num2) / denom
 
-    # Cast tri_counts as a defaultdict with zero_count_probs as the default.
+    # Cast n_counts as a defaultdict with zero_count_probs as the default.
     # Default values used in calc_perplexity.
-    new_counts = collections.defaultdict(lambda: zero_count_probs, tri_counts)
+    new_counts = collections.defaultdict(lambda: zero_count_probs, n_counts)
 
     return new_counts
 
 
 # ROMI
-def estimate_probs(trigram_counts_dict):
+def estimate_probs(ngram_counts_dict):
     '''
-    # Estimates probabilities of trigrams using
-    # trigram_counts_dict and returns a new dictionary
+    # Estimates probabilities of ngrams using
+    # ngram_counts_dict and returns a new dictionary
     # with the probabilities.
     '''
 
     # variable that creates a new dictionary called
-    # trigram_probs_dict which is a copy of trigram_counts_dict.
-    trigram_probs_dict = trigram_counts_dict.copy()
+    # ngram_probs_dict which is a copy of ngram_counts_dict.
+    ngram_probs_dict = ngram_counts_dict.copy()
 
-    # a for loop that iterates over all the keys in trigram_probs_dict
+    # a for loop that iterates over all the keys in ngram_probs_dict
     # and sets the value of that key (which is currently the count)
     # to be the probability of that key by dividing the value by the sum
     # of all values (MLE). Once all keys are iterated over,
-    # trigram_probs_dict is returned
-    for key, value in trigram_counts_dict.items():
-        bigrams = [trigram_counts_dict[k] for k in trigram_counts_dict.keys() if k.startswith(key[:2])]
-        trigram_probs_dict[key] = value / sum(bigrams)
+    # ngram_probs_dict is returned
+    for key, value in ngram_counts_dict.items():
+        bigrams = [ngram_counts_dict[k] for k in ngram_counts_dict.keys() if k.startswith(key[:len(key)-1])]
+        ngram_probs_dict[key] = value / sum(bigrams)
 
-    return trigram_probs_dict
+    return ngram_probs_dict
 
 
 # JAKE
 # Implemented in write_file.py
-def write_file(trigram_probs_dict, model_name=None):
+def write_file(ngram_probs_dict, model_name=None):
     '''
     # Writes nicely formatted contents
-    # of trigram_probs_dict to a file,
-    # called trigram_model.txt. If the file
+    # of ngram_probs_dict to a file,
+    # called [NGRAMS]gram_model.txt. If the file
     # already exists, each new model is
     # appended to the end of the file.
     '''
@@ -261,16 +269,16 @@ def write_file(trigram_probs_dict, model_name=None):
     else:
         model_name = model_name.upper()
 
-    # Open trigram_model.txt (create it if it doesn't exist)
+    # Open ngram_model.txt (create it if it doesn't exist)
     # in append mode.
-    with open('trigram_model.txt', 'a') as f:
+    with open(str(NGRAMS) + 'gram_model.txt', 'a') as f:
 
         # Write the model_name and column headers
         f.write(" \t\t**** {0} ****\n\n" .format(model_name))
 
-        # Write the contents of the trigram model
+        # Write the contents of the ngram model
         entries = 0
-        for key, value in sorted(trigram_probs_dict.items()):
+        for key, value in sorted(ngram_probs_dict.items()):
             f.write("  {0}  :  {1},  " .format(key, value))
 
             if entries == 5:
@@ -287,23 +295,23 @@ def write_file(trigram_probs_dict, model_name=None):
 
 
 # JAKE
-def calc_perplexity(test_counts_dict, trigram_probs_dict):
+def calc_perplexity(test_counts_dict, ngram_probs_dict):
     '''
     # Calculates perplexity of contents of file_string
-    # according to probabilities in trigram_probs_dict.
+    # according to probabilities in ngram_probs_dict.
     '''
 
     test_probs = []
 
-    for trigram, count in test_counts_dict.items():
+    for ngram, count in test_counts_dict.items():
 
-        # If the trigram doesn't appear in our model, just skip it.
+        # If the ngram doesn't appear in our model, just skip it.
         for n in range(count):
 
-            # Since trigram_probs_dict is a defaultdict as created
+            # Since ngram_probs_dict is a defaultdict as created
             # in gt_discount, it will return the zero count probability
-            # if trigram not in trigram_probs_dict.
-            logprob = numpy.log2(trigram_probs_dict[trigram])
+            # if ngram not in ngram_probs_dict.
+            logprob = numpy.log2(ngram_probs_dict[ngram])
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
@@ -316,14 +324,14 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
 
 
 # ROMI
-def gen_random_output(trigram_probs_dict):
+def gen_random_output(ngram_probs_dict):
     '''
     # Generate random output based on
-    # probabilities in trigram_probs_dict.
+    # probabilities in ngram_probs_dict.
     '''
 
     od = collections.OrderedDict()
-    od.update(trigram_probs_dict)
+    od.update(ngram_probs_dict)
     random_string = numpy.random.choice(od.keys(), size=50, p=od.values())
     random_string = ''.join(random_string)
     return random_string

@@ -1,7 +1,8 @@
 #! /usr/bin/python2
 
 
-def count_trigrams(processed_string):
+def count_trigrams(n, processed_string):
+#def count_trigrams(processed_string):
         '''
         # The function count_trigrams counts all
         # character trigrams in processed_string
@@ -17,7 +18,7 @@ def count_trigrams(processed_string):
         # the indices within processed_string
         # (print s[0:3] prints the first three characters of s)
         i = 0
-        j = 3
+        j = n
 
         # this for loop iterates over the characters
         # in processed_line, pairs them into trigrams
@@ -29,7 +30,7 @@ def count_trigrams(processed_string):
         # Once there are no more trigrams to be iterated over,
         # trigram_counts_dict is returned.
         for char in processed_string:
-                if len(processed_string[i:j]) == 3:
+                if len(processed_string[i:j]) == n:
                         trigram = processed_string[i:j]
                         i += 1
                         j += 1

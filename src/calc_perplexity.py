@@ -21,7 +21,6 @@ def calc_perplexity(test_counts_dict, trigram_probs_dict):
             test_probs.append(logprob)
 
     logprob = sum(test_probs)
-    print "LOGPROB: {0}" .format(logprob)
 
     entropy = logprob / len(test_probs)
 

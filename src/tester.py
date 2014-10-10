@@ -27,7 +27,7 @@ class Tester(object):
 
         self.train_file_str = read_file(training_data_file)
         self.train_pfs = preprocess_line(self.train_file_str)
-        self.train_counts = count_trigrams(self.train_pfs)
+        self.train_counts = count_trigrams(3, self.train_pfs)
 
         ans = raw_input("Smooth the counts? [y/n]")
         if ans.lower() == 'y':
@@ -42,7 +42,7 @@ class Tester(object):
 
         self.test_file_str = read_file(test_data_file)
         self.test_pfs = preprocess_line(self.test_file_str)
-        self.test_counts = count_trigrams(self.test_pfs)
+        self.test_counts = count_trigrams(3, self.test_pfs)
         self.perplexity = calc_perplexity(self.test_counts, self.train_probs)
 
     def attr(self):

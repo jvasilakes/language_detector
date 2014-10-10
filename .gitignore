@@ -2,5 +2,9 @@
 .DS_Store
 *.pyc
 trigram_model.txt
+*.txt
 src/*.txt
+*.old
+src/*.old
 FILES
+assignment_files
