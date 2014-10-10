@@ -3,13 +3,6 @@
 import re
 
 
-def test(func):
-
-    string = "There once were 2 men who had a 16x4 in gobledigook, &&&"
-
-    return func(string)
-
-
 # JAKE
 def preprocess_line(file_string):
     '''
@@ -34,7 +27,3 @@ def preprocess_line(file_string):
     processed_string = re.sub(r'\s', r'_', processed_string)
 
     return processed_string
-
-
-if __name__ == '__main__':
-    print test(preprocess_line)
