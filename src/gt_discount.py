@@ -8,7 +8,7 @@ def gt_discount(tri_counts):
     '''
     # Good-Turing discounter.
     # Calculates Good-Turing probability of
-    # zero-count trigrams, and disocunts
+    # zero-count trigrams, and discounts
     # all counts in tri_counts accordingly.
     # Recasts tri_counts as a defaultdict with
     # zero_count_probs as the default value.
