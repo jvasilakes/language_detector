@@ -12,12 +12,18 @@
 
 from __future__ import division
 
+import os
 import re
 import numpy
 import collections
 
 
 def main():
+
+    # If we've already built some models before,
+    # rename the file to keep them separate.
+    if os.path.isfile('trigram_model.txt'):
+        os.rename('trigram_model.txt', 'trigram_model.old')
 
     training_data_en = 'training.en'
     training_data_es = 'training.es'
@@ -188,7 +194,7 @@ def gt_discount(tri_counts):
     zero_count_probs = (N_1 / N)
 
     # Calculate updated counts and update values.
-    # Equation: discount_c = (c+1) * (N_c+1 / N_c) 
+    # Equation: discount_c = (c+1) * (N_c+1 / N_c)
     for key, value in tri_counts.iteritems():
 
         # Calculate first numerator (c+1)
@@ -232,8 +238,8 @@ def estimate_probs(trigram_counts_dict):
     # of all values (MLE). Once all keys are iterated over,
     # trigram_probs_dict is returned
     for key, value in trigram_counts_dict.items():
-    	bigrams = [trigram_counts_dict[k] for k in trigram_counts_dict.keys() if k.startswith(key[:2])]
-    	trigram_probs_dict[key] = value / sum(bigrams)
+        bigrams = [trigram_counts_dict[k] for k in trigram_counts_dict.keys() if k.startswith(key[:2])]
+        trigram_probs_dict[key] = value / sum(bigrams)
 
     return trigram_probs_dict
 
@@ -260,14 +266,20 @@ def write_file(trigram_probs_dict, model_name=None):
     with open('trigram_model.txt', 'a') as f:
 
         # Write the model_name and column headers
-        f.write(" **** {0} ****\n\n" .format(model_name))
-        f.write("TRIGRAM    PROBABILITY\n\n")
+        f.write(" \t\t**** {0} ****\n\n" .format(model_name))
 
         # Write the contents of the trigram model
+        entries = 0
         for key, value in sorted(trigram_probs_dict.items()):
-            f.write("  {0}  :  {1}\n" .format(key, value))
+            f.write("  {0}  :  {1},  " .format(key, value))
 
-        f.write('\n')
+            if entries == 5:
+                f.write('\n')
+                entries = 0
+            else:
+                entries += 1
+
+        f.write('\n\n\n')
 
     return
 
