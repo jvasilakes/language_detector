@@ -17,10 +17,6 @@ def estimate_probs(trigram_counts_dict):
     # trigram_probs_dict which is a copy of trigram_counts_dict.
     trigram_probs_dict = trigram_counts_dict.copy()
     
- 	# sets the variable sum_counts to the sum
-    # of all the values in trigram_couns_dict
-    sum_counts = sum(trigram_counts_dict.values())
-    
     # a for loop that iterates over all the keys in trigram_probs_dict.
     # within this for loop, we iterate over all keys again with k
     # and if that key 'k' starts with the same two characters as key
