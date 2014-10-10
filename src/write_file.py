@@ -54,14 +54,20 @@ def write_file(trigram_probs_dict, model_name=None):
     with open('trigram_model.txt', 'a') as f:
 
         # Write the model_name and column headers
-        f.write(" **** {0} ****\n\n" .format(model_name))
-        f.write("TRIGRAM    PROBABILITY\n\n")
+        f.write(" \t\t**** {0} ****\n\n" .format(model_name))
 
         # Write the contents of the trigram model
+        entries = 0
         for key, value in sorted(trigram_probs_dict.items()):
-            f.write("  {0}  :  {1}\n" .format(key, value))
+            f.write("  {0}  :  {1},  " .format(key, value))
 
-        f.write('\n')
+            if entries == 5:
+                f.write('\n')
+                entries = 0
+            else:
+                entries += 1
+
+        f.write('\n\n\n')
 
     return
 
