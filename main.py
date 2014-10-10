@@ -324,14 +324,16 @@ def calc_perplexity(test_counts_dict, ngram_probs_dict):
 
 
 # ROMI
-def gen_random_output(ngram_probs_dict):
+def gen_random_output(ngram_probs_dict, n=300):
     '''
-    # Generate random output based on
-    # probabilities in ngram_probs_dict.
+    # Generate n characters of output randomly selected
+    # from the keys of ngram_probs_dict according to
+    # those keys probability values.
+    # OrderedDict is used to ensure that each key is
+    # paired with its associated value.
     '''
 
-    od = collections.OrderedDict()
-    od.update(ngram_probs_dict)
+    od = collections.OrderedDict(ngram_probs_dict)
     random_string = numpy.random.choice(od.keys(), size=50, p=od.values())
     random_string = ''.join(random_string)
     return random_string
