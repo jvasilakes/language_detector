@@ -10,13 +10,13 @@ def gen_random_output(ngram_probs_dict, n=300):
         # OrderedDict is used to ensure that each key is 
         # paired with its associated value.
         '''
-        random_string = numpy.random.choice(ngram_probs_dict())
+        random_string = np.random.choice(ngram_probs_dict.keys())
         
         for i in range(n):
         	od = collections.OrderedDict()
-        	for key, value in ngram_probs_dict:
+        	for key, value in ngram_probs_dict.iteritems():
         		if key.startswith(random_string[-2:]):
-        			od.update({key, value})
+        			od.update({key: value})
         	next = np.random.choice(od.keys(), p=od.values())
         	random_string += next[-1]
         

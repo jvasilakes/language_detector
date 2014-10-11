@@ -24,6 +24,7 @@ def preprocess_line(file_string):
     processed_string = re.sub(r'\d', r'0', processed_string)
 
     # Replace whitespace with underscore
-    processed_string = re.sub(r'\s', r'_', processed_string)
+    #processed_string = re.sub(r'\s', r'_', processed_string)
+    processed_string = re.sub(r'\s', r' ', processed_string)
 
     return processed_string

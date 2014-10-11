@@ -33,6 +33,7 @@ def main():
     if os.path.isfile(str(NGRAMS) + 'gram_model.txt'):
         os.rename(str(NGRAMS) + 'gram_model.txt', str(NGRAMS) + 'gram_model.old')
 
+    # Make sure training as test files are named correctly!
     training_data_en = 'training.en'
     training_data_es = 'training.es'
     training_data_de = 'training.de'
@@ -45,7 +46,7 @@ def main():
     es_model = build_model(training_data_es, model_name='es_model')
     print "Building German model."
     de_model = build_model(training_data_de, model_name='de_model')
-    print "Models written to file '"+str(NGRAMS)+"'gram_model.txt'."
+    print "Models written to file '"+str(NGRAMS)+"gram_model.txt'."
 
     # Classify the test data file
     test_data_str = read_file(test_data_file)
@@ -63,13 +64,13 @@ def main():
     result = min(en_perplexity, es_perplexity, de_perplexity)
 
     if result == en_perplexity:
-        lang = "ENGLISH"
+        lang = "English"
     elif result == es_perplexity:
-        lang = "SPANISH"
+        lang = "Spanish"
     else:
-        lang = "GERMAN"
+        lang = "German"
 
-    print "Test document language: {0}" .format(lang)
+    print "Test document probably written in {0}" .format(lang)
 
 
 # ------- BUILD MODEL -------------------------------------
